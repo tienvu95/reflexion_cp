@@ -1143,6 +1143,23 @@ def run(args, external_llm=None):
         except Exception:
             pass
         prob_records.append((prob_dict_for_example, gold_label))
+        # Prepare per-example probability fields for CSV logging
+        csv_p_yes = None
+        csv_p_no = None
+        csv_p_maybe = None
+        csv_argmax_label = None
+        csv_argmax_prob = None
+        try:
+            if isinstance(prob_dict_for_example, dict):
+                csv_p_yes = float(prob_dict_for_example.get('yes', prob_dict_for_example.get(' yes', 0.0)))
+                csv_p_no = float(prob_dict_for_example.get('no', prob_dict_for_example.get(' no', 0.0)))
+                csv_p_maybe = float(prob_dict_for_example.get('maybe', prob_dict_for_example.get(' maybe', 0.0)))
+                # determine argmax label and prob
+                _am_map = {'yes': csv_p_yes, 'no': csv_p_no, 'maybe': csv_p_maybe}
+                csv_argmax_label = max(_am_map, key=lambda k: _am_map[k])
+                csv_argmax_prob = _am_map[csv_argmax_label]
+        except Exception:
+            pass
         # Debug: show the probabilities recorded for Brier computation
         try:
             if getattr(args, 'print_debug', False):
@@ -1739,6 +1756,11 @@ def run(args, external_llm=None):
             'rouge1_delta': (None if (rouge1_orig is None or rouge1_final is None) else (rouge1_final - rouge1_orig)),
             'readability_rewrites_used': readability_rewrites_used,
             'rewrite_accepted': rewrite_accepted,
+            'p_yes': csv_p_yes,
+            'p_no': csv_p_no,
+            'p_maybe': csv_p_maybe,
+            'argmax_label': csv_argmax_label,
+            'argmax_prob': csv_argmax_prob,
         })
 
         if total % 10 == 0 or total == target_total:
@@ -1753,7 +1775,7 @@ def run(args, external_llm=None):
     # write CSV
     out_path = args.out or f'results_{args.dataset.replace("/","_")}_{args.split}.csv'
     with open(out_path, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=['index','question','context','true_answer','long_answer','predicted_answer','scratchpad','reason_text','correct','fk_orig','fk_final','fk_improved','rouge1_orig','rouge1_final','rouge1_delta','readability_rewrites_used','rewrite_accepted'])
+        writer = csv.DictWriter(f, fieldnames=['index','question','context','true_answer','long_answer','predicted_answer','scratchpad','reason_text','correct','fk_orig','fk_final','fk_improved','rouge1_orig','rouge1_final','rouge1_delta','readability_rewrites_used','rewrite_accepted','p_yes','p_no','p_maybe','argmax_label','argmax_prob'])
         writer.writeheader()
         for r in out_rows:
             writer.writerow(r)
