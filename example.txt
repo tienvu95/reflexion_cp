@@ -1,0 +1,104 @@
+Loading dataset qiaojin/PubMedQA split=train...
+Using fields -> question=question, context=context, answer=final_decision, long=long_answer
+Using externally provided LLM instance (wrapped)
+
+===== Example 1/2 =====
+Question: Do mitochondria play a role in remodelling lace plant leaves during programmed cell death?
+
+===== Example 1/2 =====
+Question: Do mitochondria play a role in remodelling lace plant leaves during programmed cell death?
+Notice: Attached SimpleDocstore fallback to agent for example 0
+Agent docstore configured: True
+
+==== DEBUG: Inputs passed to agent for example 0 ====
+Question: Do mitochondria play a role in remodelling lace plant leaves during programmed cell death?
+Context (truncated 1000 chars): Programmed cell death (PCD) is the regulated death of cells within an organism. The lace plant (Aponogeton madagascariensis) produces perforations in its leaves through PCD. The leaves of the plant consist of a latticework of longitudinal and transverse veins enclosing areoles. PCD occurs in the cells at the center of these areoles and progresses outwards, stopping approximately five cells from the vasculature. The role of mitochondria during PCD has been recognized in animals; however, it has been less studied during PCD in plants.
+
+The following paper elucidates the role of mitochondrial dynamics during developmentally regulated PCD in vivo in A. madagascariensis. A single areole within a window stage leaf (PCD is occurring) was divided into three areas based on the progression of PCD; cells that will not undergo PCD (NPCD), cells in early stages of PCD (EPCD), and cells in late stages of PCD (LPCD). Window stage leaves were stained with the mitochondrial dye MitoTracker Red CMXRos a...
+True/Label Answer: yes
+doc_for_agent repr: <hotpotqa_runs.run_pubmedqa.run.<locals>.SimpleDocstore object at 0x7b68ab654080>
+
+--- Built agent prompt (initial) ---
+Answer a PubMedQA biomedical question by having a Thought, then Finish with your answer. First decide the label (yes, no, or maybe) and then provide a short justification prefixed with "Reason:". Thought can reason about the PubMed abstract context and the question. Finish[answer] returns the answer and finishes the task. Always rely on the provided context and restrict the final answer to yes, no, or maybe.
+Here are some examples:
+
+(END OF EXAMPLES)
+
+
+
+Relevant PubMed Context: Programmed cell death (PCD) is the regulated death of cells within an organism. The lace plant (Aponogeton madagascariensis) produces perforations in its leaves through PCD. The leaves of the plant consist of a latticework of longitudinal and transverse veins enclosing areoles. PCD occurs in the cells at the center of these areoles and progresses outwards, stopping approximately five cells from the vasculature. The role of mitochondria during PCD has been recognized in animals; however, it has been less studied during PCD in plants.
+
+The following paper elucidates the role of mitochondrial dynamics during developmentally regulated PCD in vivo in A. madagascariensis. A single areole within a window stage leaf (PCD is occurring) was divided into three areas based on the progression of PCD; cells that will not undergo PCD (NPCD), cells in early stages of PCD (EPCD), and cells in late stages of PCD (LPCD). Window stage leaves were stained with the mitochondrial dye MitoTracker Red CMXRos and examined. Mitochondrial dynamics were delineated into four categories (M1-M4) based on characteristics including distribution, motility, and membrane potential (ΔΨm). A TUNEL assay showed fragmented nDNA in a gradient over these mitochondrial stages. Chloroplasts and transvacuolar strands were also examined using live cell imaging. The possible importance of mitochondrial permeability transition pore (PTP) formation during PCD was indirectly examined via in vivo cyclosporine A (CsA) treatment. This treatment resulted in lace plant leaves with a significantly lower number of perforations compared to controls, and that displayed mitochondrial dynamics similar to that of non-PCD cells.
+Question: Do mitochondria play a role in remodelling lace plant leaves during programmed cell death?
+--- End prompt ---
+
+Thought: Action: Finish[yes] Reason: The paper describes the role of mitochondrial dynamics during developmentally regulated PCD in vivo in A. madagascariensis, indicating that mitochondria play a role in remodelling lace plant leaves during PCD.  The paper examines mitochondrial dynamics in cells that will not undergo PCD, cells in early stages of PCD, and cells in late stages of PCD, and shows that mitochondrial dynamics change as PCD progresses.  The paper also shows that in vivo cyclosporine A treatment, which inhibits mitochondrial permeability transition pore formation, results in lace plant leaves with a significantly lower number of perforations compared to controls, indicating that mitochondrial permeability transition pore formation may play a role in PCD.  Therefore, the answer to the question is yes.  The paper provides evidence that mitochondria play a role in remodelling lace plant leaves during PCD.  The paper shows that mitochondrial dynamics change as PCD progresses, and that inhibiting mitochondrial permeability transition pore formation results in a lower number of perforations, indicating that mitochondria play a role in PCD.  Therefore, the answer to the question is yes.  The paper provides evidence that mitochondria play a role in remodelling lace plant
+Action: Finish[yes]
+Confidence for prediction "yes" = 0.8822 (choices: {'yes': 0.8822290941661708, 'no': 0.05125169246762315, 'maybe': 0.0665192133662061})
+Final Answer: yes
+Reason: Reason: yes.
+=========================================
+Final Answer: yes
+Reason: Reason: yes.
+=========================================
+
+===== Example 2/2 =====
+Question: Landolt C and snellen e acuity: differences in strabismus amblyopia?
+
+===== Example 2/2 =====
+Question: Landolt C and snellen e acuity: differences in strabismus amblyopia?
+Notice: Attached SimpleDocstore fallback to agent for example 1
+Agent docstore configured: True
+
+==== DEBUG: Inputs passed to agent for example 1 ====
+Question: Landolt C and snellen e acuity: differences in strabismus amblyopia?
+Context (truncated 1000 chars): Assessment of visual acuity depends on the optotypes used for measurement. The ability to recognize different optotypes differs even if their critical details appear under the same visual angle. Since optotypes are evaluated on individuals with good visual acuity and without eye disorders, differences in the lower visual acuity range cannot be excluded. In this study, visual acuity measured with the Snellen E was compared to the Landolt C acuity.
+
+100 patients (age 8 - 90 years, median 60.5 years) with various eye disorders, among them 39 with amblyopia due to strabismus, and 13 healthy volunteers were tested. Charts with the Snellen E and the Landolt C (Precision Vision) which mimic the ETDRS charts were used to assess visual acuity. Three out of 5 optotypes per line had to be correctly identified, while wrong answers were monitored. In the group of patients, the eyes with the lower visual acuity, and the right eyes of the healthy subjects, were evaluated.
+
+Differences between Landolt...
+True/Label Answer: no
+doc_for_agent repr: <hotpotqa_runs.run_pubmedqa.run.<locals>.SimpleDocstore object at 0x7b68ab12f350>
+
+--- Built agent prompt (initial) ---
+Answer a PubMedQA biomedical question by having a Thought, then Finish with your answer. First decide the label (yes, no, or maybe) and then provide a short justification prefixed with "Reason:". Thought can reason about the PubMed abstract context and the question. Finish[answer] returns the answer and finishes the task. Always rely on the provided context and restrict the final answer to yes, no, or maybe.
+Here are some examples:
+
+(END OF EXAMPLES)
+
+
+
+Relevant PubMed Context: Assessment of visual acuity depends on the optotypes used for measurement. The ability to recognize different optotypes differs even if their critical details appear under the same visual angle. Since optotypes are evaluated on individuals with good visual acuity and without eye disorders, differences in the lower visual acuity range cannot be excluded. In this study, visual acuity measured with the Snellen E was compared to the Landolt C acuity.
+
+100 patients (age 8 - 90 years, median 60.5 years) with various eye disorders, among them 39 with amblyopia due to strabismus, and 13 healthy volunteers were tested. Charts with the Snellen E and the Landolt C (Precision Vision) which mimic the ETDRS charts were used to assess visual acuity. Three out of 5 optotypes per line had to be correctly identified, while wrong answers were monitored. In the group of patients, the eyes with the lower visual acuity, and the right eyes of the healthy subjects, were evaluated.
+
+Differences between Landolt C acuity (LR) and Snellen E acuity (SE) were small. The mean decimal values for LR and SE were 0.25 and 0.29 in the entire group and 0.14 and 0.16 for the eyes with strabismus amblyopia. The mean difference between LR and SE was 0.55 lines in the entire group and 0.55 lines for the eyes with strabismus amblyopia, with higher values of SE in both groups. The results of the other groups were similar with only small differences between LR and SE.
+Question: Landolt C and snellen e acuity: differences in strabismus amblyopia?
+--- End prompt ---
+
+Thought: Action: Finish[no] Reason: The mean difference between Landolt C and Snellen E acuity was 0.55 lines in the entire group and 0.55 lines for the eyes with strabismus amblyopia, with higher values of Snellen E in both groups. This suggests that there are no significant differences between Landolt C and Snellen E acuity in strabismus amblyopia.
+Action: Finish[no]
+Confidence for prediction "no" = 0.7774 (choices: {'yes': 0.13299251107086932, 'no': 0.7773710816313925, 'maybe': 0.08963640729773822})
+Progress: 2/2 (100.0%)  Acc=1.000
+Final Answer: no
+Reason: Reason: no.
+=========================================
+Final Answer: no
+Reason: Reason: no.
+=========================================
+Done. Processed=2. Correct=2. Results saved to results_qiaojin_PubMedQA_train.csv
+Accuracy: 1.0000
+Macro-F1: 1.0000
+              precision    recall  f1-score   support
+
+          no     1.0000    1.0000    1.0000         1
+         yes     1.0000    1.0000    1.0000         1
+
+    accuracy                         1.0000         2
+   macro avg     1.0000    1.0000    1.0000         2
+weighted avg     1.0000    1.0000    1.0000         2
+
+Mean Brier (0-2 scale over 2 examples): 0.048103
+Avg ROUGE-1 F1 (rationale vs long_answer): 0.0000
+Avg ROUGE-L F1 (rationale vs long_answer): 0.0000
+Avg Flesch Reading Ease (rationales): 77.91
