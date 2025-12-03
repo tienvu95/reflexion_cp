@@ -1316,26 +1316,64 @@ def run(args, external_llm=None):
         rationale_text = ''
         import re
         instr_pat = re.compile(r"do not include|do not output|do not add|don't include|don't output|do not mention", flags=re.IGNORECASE)
-        for line in reversed(scratchpad.splitlines()):
-            if 'Reason:' not in line:
-                continue
-            reason_part = line.split('Reason:', 1)[1].strip()
-            if not reason_part:
-                continue
-            # skip instruction-like reason lines
-            if instr_pat.search(reason_part):
-                continue
-            # require some substance
-            if len(reason_part.split()) < 3 or reason_part.strip() in ('```','``'):
-                continue
-            rationale_text = reason_part
-            # update fallback tracker
-            try:
-                if rationale_text and len(rationale_text.strip().strip('`.')) >= 3:
-                    last_rationale_text = rationale_text
-            except Exception:
-                pass
-            break
+        lines_sp = scratchpad.splitlines()
+        # 1) Anchor to the last Finish[...] line
+        last_finish_idx = None
+        try:
+            for idx, ln in enumerate(lines_sp):
+                if re.search(r"Finish\[", ln, flags=re.IGNORECASE):
+                    last_finish_idx = idx
+        except Exception:
+            last_finish_idx = None
+
+        def _valid_reason_line(ln: str) -> str:
+            if 'Reason:' not in ln:
+                return ''
+            part = ln.split('Reason:', 1)[1].strip()
+            if not part:
+                return ''
+            if instr_pat.search(part):
+                return ''
+            if len(part.split()) < 3 or part.strip() in ('```','``'):
+                return ''
+            return part
+
+        # 2) Prefer a Reason line after the last Finish
+        if last_finish_idx is not None and last_finish_idx < len(lines_sp) - 1:
+            post_finish = lines_sp[last_finish_idx+1:]
+            for ln in post_finish:
+                part = _valid_reason_line(ln)
+                if part:
+                    rationale_text = part
+                    break
+            # 3) If no explicit Reason found, pick first substantive line after Finish
+            if not rationale_text:
+                for ln in post_finish:
+                    cand = (ln or '').strip()
+                    if not cand:
+                        continue
+                    if instr_pat.search(cand):
+                        continue
+                    if cand.strip() in ('```','``'):
+                        continue
+                    if len(cand.split()) >= 3:
+                        rationale_text = cand
+                        break
+
+        # 4) Fallback to last valid Reason anywhere
+        if not rationale_text:
+            for ln in reversed(lines_sp):
+                part = _valid_reason_line(ln)
+                if part:
+                    rationale_text = part
+                    break
+
+        # 5) Update fallback tracker
+        try:
+            if rationale_text and len(rationale_text.strip().strip('`.')) >= 3:
+                last_rationale_text = rationale_text
+        except Exception:
+            pass
         if not rationale_text:
             rationale_text = ''
 
