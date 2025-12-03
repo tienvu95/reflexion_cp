@@ -201,6 +201,31 @@ def run(args, external_llm=None):
             "If the dataset has multiple configs (e.g. PubMedQA), pass one with --dataset-config,\n"
             "for example: --dataset-config pqa_labeled\n"
         ) from e
+    # Optional: crop dataset by start/end indices (inclusive end)
+    try:
+        start_idx = getattr(args, 'start_index', None)
+        end_idx = getattr(args, 'end_index', None)
+    except Exception:
+        start_idx = None
+        end_idx = None
+
+    if start_idx is not None or end_idx is not None:
+        try:
+            total_len = len(ds)
+            s = 0 if start_idx is None else max(0, int(start_idx))
+            # Treat end_idx as inclusive; convert to exclusive for selection
+            e_excl = total_len if end_idx is None else min(total_len, int(end_idx) + 1)
+            if s >= e_excl:
+                print(f'Requested index range [{start_idx}:{end_idx}] is empty after bounds checking. Exiting.')
+                return
+            ds = ds.select(list(range(s, e_excl)))
+            try:
+                print(f'Cropped dataset to indices [{s}:{e_excl-1}] -> {len(ds)} examples.')
+            except Exception:
+                pass
+        except Exception as e:
+            print(f'Warning: failed to crop dataset by indices: {e}')
+
     if len(ds) == 0:
         print('Empty split. Exiting.')
         return
@@ -1844,6 +1869,9 @@ if __name__ == '__main__':
     p.add_argument('--max-readability-rewrites', type=int, default=1, help='Maximum attempts to rewrite rationale for readability acceptance')
     p.add_argument('--rouge-drop-threshold', type=float, default=0.05, help='Maximum allowed drop in ROUGE-1 F1 when accepting rewritten rationale')
     p.add_argument('--flip-on-incorrect', action='store_true', help='If the predicted label is incorrect, flip to an alternative (of the remaining two) using logits confidence and produce a matching rationale')
+    # Cropping options
+    p.add_argument('--start-index', type=int, default=None, help='Start index (inclusive) to crop dataset before processing')
+    p.add_argument('--end-index', type=int, default=None, help='End index (inclusive) to crop dataset before processing')
     args = p.parse_args()
 
     # normalize limit
