@@ -157,7 +157,7 @@ def brier_multiclass_sum(prob_dict, gold_label, classes=CLASSES):
 ds   = load_dataset("qiaojin/PubMedQA", "pqa_labeled")
 pmqa = ds["train"]       # use "test" for reporting; change to "train" if you want
 N    = len(pmqa)        # set smaller for a smoke test
-
+N    = min(500, len(pmqa))
 preds, golds = [], []
 brier_probs, brier_vals = [], []
 
@@ -246,7 +246,7 @@ MAX_NEW = 160     # generation budget for rationale
 # ---- Single-pass prompt: ONLY rationale required ----
 INSTR = (
     "You are answering PubMedQA. "
-    "Write a concise explanation in plain language based only on the abstract. "
+    "Write a concise explanation in plain language at, a 6th–8th grade reading level, based only on the abstract. "
     "End with: 'This is not medical advice.'\n\n"
     "Return answers in this EXACT format:\n"
     "Reason:\n"
